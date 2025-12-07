@@ -26,6 +26,8 @@
 
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
@@ -37,6 +39,8 @@
             this.buttonHelp = new System.Windows.Forms.Button();
             this.labelInfo = new System.Windows.Forms.Label();
             this.dataGridViewNums = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chartDiag = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.labelPath = new System.Windows.Forms.Label();
             this.textBoxPath = new System.Windows.Forms.TextBox();
@@ -90,7 +94,7 @@
             this.textBoxPath.TabIndex = 4;
             this.textBoxPath.Text = @"C:\Users\Кошка\source\repos\Tyuiu.RadochinaAP.Sprint6\Tyuiu.RadochinaAP.Sprint6.Task5.V26\bin\Debug\InPutFileTask5V26.txt";
 
-            // buttonDone - ВЫПОЛНИТЬ (зеленый)
+            // buttonDone
             this.buttonDone.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.buttonDone.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonDone.ForeColor = System.Drawing.Color.White;
@@ -101,11 +105,10 @@
             this.buttonDone.Text = "ВЫПОЛНИТЬ";
             this.buttonDone.UseVisualStyleBackColor = false;
             this.buttonDone.Click += new System.EventHandler(this.buttonDone_Click);
-            this.buttonDone.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonDone_MouseDown);
             this.buttonDone.MouseEnter += new System.EventHandler(this.buttonDone_MouseEnter);
             this.buttonDone.MouseLeave += new System.EventHandler(this.buttonDone_MouseLeave);
 
-            // buttonOpenFile - ОТКРЫТЬ ФАЙЛ (синий)
+            // buttonOpenFile
             this.buttonOpenFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.buttonOpenFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonOpenFile.ForeColor = System.Drawing.Color.White;
@@ -119,7 +122,7 @@
             this.buttonOpenFile.MouseEnter += new System.EventHandler(this.buttonOpenFile_MouseEnter);
             this.buttonOpenFile.MouseLeave += new System.EventHandler(this.buttonOpenFile_MouseLeave);
 
-            // buttonHelp - СПРАВКА (голубой)
+            // buttonHelp
             this.buttonHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(135)))), ((int)(((byte)(206)))), ((int)(((byte)(235)))));
             this.buttonHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonHelp.ForeColor = System.Drawing.Color.Black;
@@ -142,18 +145,45 @@
             this.labelInfo.TabIndex = 8;
             this.labelInfo.Text = "Найдено чисел: 0";
 
-            // dataGridViewNums
+            // dataGridViewNums - ИСПРАВЛЕНО!
             this.dataGridViewNums.AllowUserToAddRows = false;
             this.dataGridViewNums.AllowUserToDeleteRows = false;
             this.dataGridViewNums.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewNums.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2});
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewNums.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewNums.Location = new System.Drawing.Point(12, 225);
             this.dataGridViewNums.Name = "dataGridViewNums";
             this.dataGridViewNums.ReadOnly = true;
             this.dataGridViewNums.RowHeadersVisible = false;
             this.dataGridViewNums.RowHeadersWidth = 51;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewNums.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewNums.RowTemplate.Height = 24;
             this.dataGridViewNums.Size = new System.Drawing.Size(300, 200);
             this.dataGridViewNums.TabIndex = 9;
+
+            // Column1
+            this.Column1.HeaderText = "Индекс";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Width = 70;
+
+            // Column2
+            this.Column2.HeaderText = "Значение";
+            this.Column2.MinimumWidth = 6;
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 150;
 
             // chartDiag
             chartArea1.Name = "ChartArea1";
@@ -197,5 +227,9 @@
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        // ДОБАВЬТЕ ЭТИ СТРОКИ В КЛАСС
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
     }
 }
