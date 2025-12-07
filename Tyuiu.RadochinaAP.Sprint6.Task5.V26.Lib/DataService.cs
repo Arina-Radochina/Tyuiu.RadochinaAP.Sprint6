@@ -9,7 +9,6 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task5.V26.Lib
 
             try
             {
-                // Проверяем существует ли файл
                 if (!File.Exists(path))
                 {
                     throw new FileNotFoundException($"Файл не найден: {path}");
@@ -20,14 +19,12 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task5.V26.Lib
                     string line;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        // Убираем пробелы
                         line = line.Trim();
 
-                        // Пропускаем пустые строки
                         if (string.IsNullOrEmpty(line))
                             continue;
 
-                        // Пробуем преобразовать строку в число
+                        // Пробуем разные форматы чисел
                         if (double.TryParse(line.Replace('.', ','), out double number) ||
                             double.TryParse(line, out number))
                         {
@@ -41,7 +38,7 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task5.V26.Lib
                 throw new Exception("Ошибка при чтении файла: " + ex.Message);
             }
 
-            return numbers.ToArray();
+            return numbers.ToArray(); // Возвращаем ВСЕ числа из файла
         }
 
         public double[] FilterNumbersMultipleOfFive(double[] numbers)
@@ -53,10 +50,10 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task5.V26.Lib
 
             foreach (double num in numbers)
             {
-                // Проверка на кратность 5 с учетом погрешности
-                // Используем остаток от деления и проверяем близость к 0
                 double remainder = Math.Abs(num % 5);
-                if (remainder < 0.001 || Math.Abs(remainder - 5) < 0.001)
+                bool isMultipleOfFive = remainder < 0.001 || Math.Abs(remainder - 5) < 0.001;
+
+                if (isMultipleOfFive)
                 {
                     filtered.Add(num);
                 }
