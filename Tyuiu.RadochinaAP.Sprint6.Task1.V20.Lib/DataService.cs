@@ -10,11 +10,8 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task1.V20.Lib
 
             for (int x = startValue, i = 0; x <= stopValue; x++, i++)
             {
-                
-                double xRad = x * Math.PI / 180.0;
 
-                
-                double denominator = Math.Cos(xRad) - 2 * x;
+                double denominator = Math.Cos(x) - 2 * x;
 
                 if (Math.Abs(denominator) < 0.000001)
                 {
@@ -22,10 +19,10 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task1.V20.Lib
                 }
                 else
                 {
-                    
                     double numerator = 2 * x - 3;
                     double fraction = numerator / denominator;
-                    valueArray[i] = Math.Round(fraction + 5 * x - Math.Sin(xRad), 2);
+                    double result = fraction + 5 * x - Math.Sin(x);
+                    valueArray[i] = Math.Round(result, 2);
                 }
             }
 

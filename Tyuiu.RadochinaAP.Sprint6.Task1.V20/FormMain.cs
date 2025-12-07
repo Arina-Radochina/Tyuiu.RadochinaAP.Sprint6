@@ -51,12 +51,13 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task1.V20
         private void buttonHelp_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Табулирование функции:\r\n" +
-                          "F(x) = (2x-3)/(cos(x)-2x) + 5x - sin(x)\r\n" +
-                          "X вводится в градусах\r\n" +
-                          "Результат округлен до 2 знаков\r\n" +
-                          "При делении на ноль возвращается 0\r\n" +
-                          "\r\nЗадание выполнила: Радочина Арина Павловна, ПИНб-25-1",
-                          "Справка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                  "F(x) = (2x-3)/(cos(x)-2x) + 5x - sin(x)\r\n" +
+                  "X вводится в радианах (как в математической формуле)\r\n" +
+                  "Результат округлен до 2 знаков после запятой\r\n" +
+                  "При делении на ноль возвращается 0\r\n" +
+                  "\r\nЗадание выполнила: Радочина Арина Павловна, ПИНб-25-1\r\n" +
+                  "Вариант 20",
+                  "Справка", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
