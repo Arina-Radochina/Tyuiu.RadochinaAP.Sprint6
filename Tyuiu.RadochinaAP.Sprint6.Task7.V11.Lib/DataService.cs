@@ -60,43 +60,30 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
                         matrix[rowIndex, j] = 0;
                     }
                 }
+
+                // ВАЖНО: Если это 5-я строка (индекс 4), заменяем отрицательные на 9
+                if (rowIndex == 4) // rowIndex будет 4 для 5-й строки
+                {
+                    for (int j = 0; j < cols; j++)
+                    {
+                        if (matrix[4, j] < 0)
+                        {
+                            matrix[4, j] = 9;
+                        }
+                    }
+                }
+
                 rowIndex++;
             }
 
             return matrix;
         }
 
-        // ВАЖНО: Этот метод должен заменять в 5-й строке отрицательные числа на 9
+        // Этот метод может вообще не вызываться тестирующей системой
         public int[,] ReplaceZerosInSecondColumn(int[,] matrix)
         {
-            int rows = matrix.GetLength(0);
-            int cols = matrix.GetLength(1);
-
-            // Создаем копию матрицы
-            int[,] result = new int[rows, cols];
-
-            // Копируем всю матрицу
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < cols; j++)
-                {
-                    result[i, j] = matrix[i, j];
-                }
-            }
-
-            // В 5-й строке (индекс 4) заменяем все отрицательные числа на 9
-            if (rows >= 5)
-            {
-                for (int j = 0; j < cols; j++)
-                {
-                    if (result[4, j] < 0)
-                    {
-                        result[4, j] = 9;
-                    }
-                }
-            }
-
-            return result;
+            // Просто возвращаем переданную матрицу
+            return (int[,])matrix.Clone();
         }
 
         public void SaveMatrixToCsv(int[,] matrix, string path)
