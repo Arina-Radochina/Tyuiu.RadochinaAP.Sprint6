@@ -9,7 +9,15 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
         {
             string[] lines = File.ReadAllLines(path);
 
-            // Находим максимальное количество столбцов
+            int realRowCount = 0;
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (!string.IsNullOrWhiteSpace(lines[i]))
+                {
+                    realRowCount++;
+                }
+            }
+
             int maxCols = 0;
             foreach (string line in lines)
             {
@@ -23,44 +31,40 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
                 }
             }
 
-            int rows = lines.Length;
+            int rows = realRowCount;
             int cols = maxCols;
 
             int[,] matrix = new int[rows, cols];
 
-            for (int i = 0; i < rows; i++)
+            int rowIndex = 0;
+            for (int i = 0; i < lines.Length && rowIndex < rows; i++)
             {
                 if (string.IsNullOrWhiteSpace(lines[i]))
                 {
-                    // Пустая строка - все значения 0
-                    for (int j = 0; j < cols; j++)
-                    {
-                        matrix[i, j] = 0;
-                    }
+                    continue; 
                 }
-                else
+
+                string[] values = lines[i].Split(';');
+                for (int j = 0; j < cols; j++)
                 {
-                    string[] values = lines[i].Split(';');
-                    for (int j = 0; j < cols; j++)
+                    if (j < values.Length && !string.IsNullOrWhiteSpace(values[j]))
                     {
-                        if (j < values.Length && !string.IsNullOrWhiteSpace(values[j]))
+                        string val = values[j].Trim();
+                        if (val == "00")
                         {
-                            string val = values[j].Trim();
-                            if (val == "00") // Обработка "00" как 0
-                            {
-                                matrix[i, j] = 0;
-                            }
-                            else
-                            {
-                                matrix[i, j] = int.Parse(val);
-                            }
+                            matrix[rowIndex, j] = 0;
                         }
                         else
                         {
-                            matrix[i, j] = 0;
+                            matrix[rowIndex, j] = int.Parse(val);
                         }
                     }
+                    else
+                    {
+                        matrix[rowIndex, j] = 0;
+                    }
                 }
+                rowIndex++;
             }
 
             return matrix;
@@ -73,12 +77,14 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
 
             int[,] result = (int[,])matrix.Clone();
 
-            // ВАЖНО: столбец с номером 2 - это третий столбец (индекс 2)
-            for (int i = 0; i < rows; i++)
+            if (rows > 4) 
             {
-                if (cols > 2 && result[i, 2] == 0) // Проверяем столбец с индексом 2
+                for (int j = 0; j < cols; j++)
                 {
-                    result[i, 2] = 1;
+                    if (result[4, j] < 0) 
+                    {
+                        result[4, j] = 9;
+                    }
                 }
             }
 
