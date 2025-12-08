@@ -17,7 +17,14 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
                 string[] values = lines[i].Split(';');
                 for (int j = 0; j < cols; j++)
                 {
-                    matrix[i, j] = int.Parse(values[j]);
+                    if (string.IsNullOrEmpty(values[j]) || values[j] == "")
+                    {
+                        matrix[i, j] = 0;
+                    }
+                    else
+                    {
+                        matrix[i, j] = int.Parse(values[j]);
+                    }
                 }
             }
 
