@@ -13,7 +13,7 @@
             base.Dispose(disposing);
         }
 
-        private void InitializeComponent()
+        private void InitializeComponent() 
         {
             this.groupBoxIn = new System.Windows.Forms.GroupBox();
             this.dataGridViewIn = new System.Windows.Forms.DataGridView();
