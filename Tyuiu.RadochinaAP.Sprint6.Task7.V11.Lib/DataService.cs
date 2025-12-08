@@ -66,26 +66,25 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
             return matrix;
         }
 
+        // ВАЖНО: Этот метод должен заменять в 5-й строке отрицательные числа на 9
         public int[,] ReplaceZerosInSecondColumn(int[,] matrix)
         {
             int rows = matrix.GetLength(0);
             int cols = matrix.GetLength(1);
 
-            int[,] result = (int[,])matrix.Clone();
+            // Создаем копию матрицы
+            int[,] result = new int[rows, cols];
 
-            // 1. В столбце с номером 2 (индекс 2) заменить 0 на 1
-            if (cols > 2) // Если есть столбец с индексом 2
+            // Копируем всю матрицу
+            for (int i = 0; i < rows; i++)
             {
-                for (int i = 0; i < rows; i++)
+                for (int j = 0; j < cols; j++)
                 {
-                    if (result[i, 2] == 0)
-                    {
-                        result[i, 2] = 1;
-                    }
+                    result[i, j] = matrix[i, j];
                 }
             }
 
-            // 2. В 5-й строке (индекс 4) все отрицательные заменить на 9
+            // В 5-й строке (индекс 4) заменяем все отрицательные числа на 9
             if (rows >= 5)
             {
                 for (int j = 0; j < cols; j++)
