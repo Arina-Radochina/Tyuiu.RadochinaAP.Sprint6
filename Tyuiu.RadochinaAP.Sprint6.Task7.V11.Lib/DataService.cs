@@ -9,7 +9,7 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
         {
             string[] lines = File.ReadAllLines(path);
 
-            // Находим реальное количество строк (без пустых в конце)
+            // Убираем пустые строки
             int realRows = 0;
             for (int i = 0; i < lines.Length; i++)
             {
@@ -19,7 +19,7 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
                 }
             }
 
-            // Находим максимальное количество столбцов
+            // Максимальное количество столбцов
             int maxCols = 0;
             foreach (string line in lines)
             {
@@ -73,9 +73,20 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
 
             int[,] result = (int[,])matrix.Clone();
 
-            // В 5-й строке (индекс 4) все отрицательные числа заменяем на 9
-            // Проверяем, что есть 5-я строка
-            if (rows >= 5) // Изменил условие с > 4 на >= 5
+            // 1. В столбце с номером 2 (индекс 2) заменить 0 на 1
+            if (cols > 2) // Если есть столбец с индексом 2
+            {
+                for (int i = 0; i < rows; i++)
+                {
+                    if (result[i, 2] == 0)
+                    {
+                        result[i, 2] = 1;
+                    }
+                }
+            }
+
+            // 2. В 5-й строке (индекс 4) все отрицательные заменить на 9
+            if (rows >= 5)
             {
                 for (int j = 0; j < cols; j++)
                 {
@@ -85,7 +96,6 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
                     }
                 }
             }
-            // Если нет 5-й строки, просто возвращаем копию матрицы
 
             return result;
         }
