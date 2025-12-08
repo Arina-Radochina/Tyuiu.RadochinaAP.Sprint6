@@ -5,10 +5,23 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
     public class DataService : ISprint6Task7V11
     {
         public int[,] GetMatrix(string path)
+        
         {
             string[] lines = File.ReadAllLines(path);
+
+            // Находим максимальное количество столбцов
+            int maxCols = 0;
+            foreach (string line in lines)
+            {
+                string[] values = line.Split(';');
+                if (values.Length > maxCols)
+                {
+                    maxCols = values.Length;
+                }
+            }
+
             int rows = lines.Length;
-            int cols = lines[0].Split(';').Length;
+            int cols = maxCols;
 
             int[,] matrix = new int[rows, cols];
 
@@ -17,13 +30,13 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
                 string[] values = lines[i].Split(';');
                 for (int j = 0; j < cols; j++)
                 {
-                    if (string.IsNullOrEmpty(values[j]) || values[j] == "")
+                    if (j < values.Length && !string.IsNullOrEmpty(values[j]) && values[j].Trim() != "")
                     {
-                        matrix[i, j] = 0;
+                        matrix[i, j] = int.Parse(values[j].Trim());
                     }
                     else
                     {
-                        matrix[i, j] = int.Parse(values[j]);
+                        matrix[i, j] = 0;
                     }
                 }
             }
@@ -35,6 +48,11 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
         {
             int rows = matrix.GetLength(0);
             int cols = matrix.GetLength(1);
+
+            if (cols < 3) // Проверяем, что есть хотя бы 3 столбца (индекс 2)
+            {
+                return (int[,])matrix.Clone();
+            }
 
             int[,] result = (int[,])matrix.Clone();
 
