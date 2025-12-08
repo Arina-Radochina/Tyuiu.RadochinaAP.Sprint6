@@ -13,10 +13,13 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
             int maxCols = 0;
             foreach (string line in lines)
             {
-                string[] values = line.Split(';');
-                if (values.Length > maxCols)
+                if (!string.IsNullOrWhiteSpace(line))
                 {
-                    maxCols = values.Length;
+                    string[] values = line.Split(';');
+                    if (values.Length > maxCols)
+                    {
+                        maxCols = values.Length;
+                    }
                 }
             }
 
@@ -27,16 +30,35 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
 
             for (int i = 0; i < rows; i++)
             {
-                string[] values = lines[i].Split(';');
-                for (int j = 0; j < cols; j++)
+                if (string.IsNullOrWhiteSpace(lines[i]))
                 {
-                    if (j < values.Length && !string.IsNullOrEmpty(values[j]) && values[j].Trim() != "")
-                    {
-                        matrix[i, j] = int.Parse(values[j].Trim());
-                    }
-                    else
+                    // Пустая строка - все значения 0
+                    for (int j = 0; j < cols; j++)
                     {
                         matrix[i, j] = 0;
+                    }
+                }
+                else
+                {
+                    string[] values = lines[i].Split(';');
+                    for (int j = 0; j < cols; j++)
+                    {
+                        if (j < values.Length && !string.IsNullOrWhiteSpace(values[j]))
+                        {
+                            string val = values[j].Trim();
+                            if (val == "00") // Обработка "00" как 0
+                            {
+                                matrix[i, j] = 0;
+                            }
+                            else
+                            {
+                                matrix[i, j] = int.Parse(val);
+                            }
+                        }
+                        else
+                        {
+                            matrix[i, j] = 0;
+                        }
                     }
                 }
             }
@@ -49,16 +71,12 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
             int rows = matrix.GetLength(0);
             int cols = matrix.GetLength(1);
 
-            if (cols < 3) // Проверяем, что есть хотя бы 3 столбца (индекс 2)
-            {
-                return (int[,])matrix.Clone();
-            }
-
             int[,] result = (int[,])matrix.Clone();
 
+            // ВАЖНО: столбец с номером 2 - это третий столбец (индекс 2)
             for (int i = 0; i < rows; i++)
             {
-                if (result[i, 2] == 0)
+                if (cols > 2 && result[i, 2] == 0) // Проверяем столбец с индексом 2
                 {
                     result[i, 2] = 1;
                 }

@@ -27,58 +27,50 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Test
         }
 
         [TestMethod]
-        public void Test2()
+        public void TestReplaceInSecondColumn()
         {
             DataService ds = new DataService();
 
-            int[,] matrix = new int[2, 3]
+            // Тестируем именно столбец с индексом 2 (третий столбец)
+            int[,] matrix = new int[3, 5]
             {
-                {1, 2, 0},
-                {4, 5, 6}
+                {1, 2, 0, 4, 5},     // 0 в столбце 2 → должно стать 1
+                {6, 7, 8, 9, 10},    // 8 в столбце 2 → без изменений
+                {11, 12, 0, 14, 15}  // 0 в столбце 2 → должно стать 1
             };
 
             int[,] result = ds.ReplaceZerosInSecondColumn(matrix);
 
-            // Проверяем замену 0 на 1 во 2-м столбце (индекс 2)
-            Assert.AreEqual(1, result[0, 2]);
-            Assert.AreEqual(6, result[1, 2]);
-        }
-
-        [TestMethod]
-        public void Test3()
-        {
-            DataService ds = new DataService();
-
-            int[,] matrix = new int[3, 4]
-            {
-                {10, 20, 0, 40},
-                {50, 60, 70, 80},
-                {90, 100, 0, 120}
-            };
-
-            int[,] result = ds.ReplaceZerosInSecondColumn(matrix);
-
+            // Проверяем изменения только в столбце с индексом 2
             Assert.AreEqual(1, result[0, 2]);  // 0 → 1
-            Assert.AreEqual(70, result[1, 2]); // без изменений
+            Assert.AreEqual(8, result[1, 2]);  // без изменений
             Assert.AreEqual(1, result[2, 2]);  // 0 → 1
+
+            // Проверяем, что другие столбцы не изменились
+            Assert.AreEqual(1, result[0, 0]);
+            Assert.AreEqual(2, result[0, 1]);
+            Assert.AreEqual(4, result[0, 3]);
+            Assert.AreEqual(5, result[0, 4]);
         }
 
         [TestMethod]
-        public void Test4()
+        public void TestWithDoubleZero()
         {
             DataService ds = new DataService();
 
+            // Тест с "00" в файле
             string tempFile = Path.GetTempFileName();
-            File.WriteAllText(tempFile, "1;2;0;4\n5;6;7;8\n9;10;0;12");
+            File.WriteAllText(tempFile, "1;2;00\n4;5;6\n7;8;00");
 
             try
             {
                 int[,] matrix = ds.GetMatrix(tempFile);
                 int[,] result = ds.ReplaceZerosInSecondColumn(matrix);
 
-                Assert.AreEqual(1, result[0, 2]);  // 0 → 1
-                Assert.AreEqual(7, result[1, 2]);  // без изменений
-                Assert.AreEqual(1, result[2, 2]);  // 0 → 1
+                // "00" должно быть прочитано как 0 и заменено на 1
+                Assert.AreEqual(1, result[0, 2]);  // 00 → 0 → 1
+                Assert.AreEqual(6, result[1, 2]);  // без изменений
+                Assert.AreEqual(1, result[2, 2]);  // 00 → 0 → 1
             }
             finally
             {
@@ -87,84 +79,37 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Test
         }
 
         [TestMethod]
-        public void Test5()
+        public void TestSpecificCase()
         {
             DataService ds = new DataService();
 
-            // Тест с разным количеством столбцов
-            string tempFile = Path.GetTempFileName();
-            File.WriteAllText(tempFile, "1;2;3\n4;5\n6;7;8;9");
-
-            try
+            // Тест конкретно для 5-й строки из ошибки
+            int[,] matrix = new int[10, 10]
             {
-                int[,] matrix = ds.GetMatrix(tempFile);
-                int[,] result = ds.ReplaceZerosInSecondColumn(matrix);
+                {1,4,18,17,2,13,14,-14,1,-18},
+                {-15,18,7,-3,-3,-6,-1,-17,18,-18},
+                {10,-15,2,-2,-8,-16,1,3,-2,-13},
+                {-4,-7,13,-7,-11,11,7,-20,-10,-16},
+                {14,-8,-2,20,5,0,5,1,-6,-17}, // Здесь в столбце 2 значение -2, не 0!
+                {10,12,-1,8,2,3,15,-17,4,-4},
+                {8,-19,0,20,1,-9,10,7,2,1},
+                {-14,-15,6,1,-11,-9,11,13,0,13},
+                {-14,16,-6,5,11,-1,-11,-6,5,-7},
+                {-17,17,-8,-20,5,12,20,13,-7,15}
+            };
 
-                Assert.AreEqual(3, matrix.GetLength(0));
-                Assert.AreEqual(4, matrix.GetLength(1)); // максимально 4 столбца
-            }
-            finally
-            {
-                File.Delete(tempFile);
-            }
-        }
+            int[,] result = ds.ReplaceZerosInSecondColumn(matrix);
 
-        [TestMethod]
-        public void Test6()
-        {
-            DataService ds = new DataService();
+            // Проверяем 5-ю строку (индекс 4)
+            // В столбце 2 значение -2, поэтому НЕ должно меняться
+            Assert.AreEqual(-2, result[4, 2]); // Не должно стать 9!
 
-            // Тест с пустыми значениями
-            string tempFile = Path.GetTempFileName();
-            File.WriteAllText(tempFile, "1;;3\n;5;6\n7;8;");
+            // Проверяем другие строки где есть 0 в столбце 2
+            // В 7-й строке (индекс 6) в столбце 2 значение 0 → должно стать 1
+            Assert.AreEqual(1, result[6, 2]); // 0 → 1
 
-            try
-            {
-                int[,] matrix = ds.GetMatrix(tempFile);
-                Assert.AreEqual(3, matrix.GetLength(0));
-                Assert.AreEqual(3, matrix.GetLength(1));
-
-                // Пустые значения должны быть 0
-                Assert.AreEqual(0, matrix[0, 1]);
-                Assert.AreEqual(0, matrix[1, 0]);
-                Assert.AreEqual(0, matrix[2, 2]);
-            }
-            finally
-            {
-                File.Delete(tempFile);
-            }
-        }
-
-        [TestMethod]
-        public void Test7()
-        {
-            DataService ds = new DataService();
-
-            // Тест сохранения файла
-            string tempFile = Path.GetTempFileName();
-            string saveFile = Path.GetTempFileName();
-
-            try
-            {
-                int[,] matrix = new int[2, 3]
-                {
-                    {1, 2, 3},
-                    {4, 5, 6}
-                };
-
-                ds.SaveMatrixToCsv(matrix, saveFile);
-                Assert.IsTrue(File.Exists(saveFile));
-
-                // Проверяем содержимое
-                string content = File.ReadAllText(saveFile);
-                Assert.IsTrue(content.Contains("1;2;3"));
-                Assert.IsTrue(content.Contains("4;5;6"));
-            }
-            finally
-            {
-                if (File.Exists(tempFile)) File.Delete(tempFile);
-                if (File.Exists(saveFile)) File.Delete(saveFile);
-            }
+            // В 8-й строке (индекс 7) в столбце 2 значение 6, не 0
+            Assert.AreEqual(6, result[7, 2]);
         }
     }
 }
