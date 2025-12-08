@@ -9,21 +9,23 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
         {
             string[] lines = File.ReadAllLines(path);
 
-            int realRowCount = 0;
+            // Находим реальное количество строк (без пустых в конце)
+            int realRows = 0;
             for (int i = 0; i < lines.Length; i++)
             {
-                if (!string.IsNullOrWhiteSpace(lines[i]))
+                if (!string.IsNullOrWhiteSpace(lines[i].Trim()))
                 {
-                    realRowCount++;
+                    realRows++;
                 }
             }
 
+            // Находим максимальное количество столбцов
             int maxCols = 0;
             foreach (string line in lines)
             {
-                if (!string.IsNullOrWhiteSpace(line))
+                if (!string.IsNullOrWhiteSpace(line.Trim()))
                 {
-                    string[] values = line.Split(';');
+                    string[] values = line.Trim().Split(';');
                     if (values.Length > maxCols)
                     {
                         maxCols = values.Length;
@@ -31,7 +33,7 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
                 }
             }
 
-            int rows = realRowCount;
+            int rows = realRows;
             int cols = maxCols;
 
             int[,] matrix = new int[rows, cols];
@@ -39,25 +41,19 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
             int rowIndex = 0;
             for (int i = 0; i < lines.Length && rowIndex < rows; i++)
             {
-                if (string.IsNullOrWhiteSpace(lines[i]))
+                string line = lines[i].Trim();
+                if (string.IsNullOrWhiteSpace(line))
                 {
-                    continue; 
+                    continue;
                 }
 
-                string[] values = lines[i].Split(';');
+                string[] values = line.Split(';');
                 for (int j = 0; j < cols; j++)
                 {
                     if (j < values.Length && !string.IsNullOrWhiteSpace(values[j]))
                     {
                         string val = values[j].Trim();
-                        if (val == "00")
-                        {
-                            matrix[rowIndex, j] = 0;
-                        }
-                        else
-                        {
-                            matrix[rowIndex, j] = int.Parse(val);
-                        }
+                        matrix[rowIndex, j] = int.Parse(val);
                     }
                     else
                     {
@@ -77,16 +73,19 @@ namespace Tyuiu.RadochinaAP.Sprint6.Task7.V11.Lib
 
             int[,] result = (int[,])matrix.Clone();
 
-            if (rows > 4) 
+            // В 5-й строке (индекс 4) все отрицательные числа заменяем на 9
+            // Проверяем, что есть 5-я строка
+            if (rows >= 5) // Изменил условие с > 4 на >= 5
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    if (result[4, j] < 0) 
+                    if (result[4, j] < 0)
                     {
                         result[4, j] = 9;
                     }
                 }
             }
+            // Если нет 5-й строки, просто возвращаем копию матрицы
 
             return result;
         }
